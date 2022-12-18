@@ -58,22 +58,26 @@ public class Main {
                 jFrameSelecting.setResizable(false);
                 JButton chooseButton = new JButton("Choose");
                 JButton confirmButton = new JButton("Confirm");
+                JButton deleteButton = new JButton("Delete");
                 JLabel choosingTips = new JLabel("If you have ever opened a game, please select it below.");
                 JComboBox<String> gameList = new JComboBox<>();
                 choosingTips.setBounds(30, 30, 400, 50);
                 chooseButton.setBounds(75, 125, 85, 50);
                 confirmButton.setBounds(207, 125, 85, 50);
-                gameList.setBounds(120, 80, 130, 25);
+                gameList.setBounds(80, 80, 130, 25);
+                deleteButton.setBounds(210, 80, 75, 25);
                 JPanel choosingTextPanel = new JPanel();
                 JPanel choosingButtonPanel = new JPanel();
                 JPanel choosingListPanel = new JPanel();
                 choosingTextPanel.add(choosingTips);
                 choosingButtonPanel.add(chooseButton);
                 choosingButtonPanel.add(confirmButton);
+                choosingButtonPanel.add(deleteButton);
                 choosingListPanel.add(gameList);
                 jFrameSelecting.add(choosingTips);
                 jFrameSelecting.add(chooseButton);
                 jFrameSelecting.add(confirmButton);
+                jFrameSelecting.add(deleteButton);
                 jFrameSelecting.add(gameList);
                 /*TODO: Add Here! */
                 String basePath = "StatisticsOfPiratedGameTime";
@@ -253,9 +257,56 @@ public class Main {
                        finChoice = finPlayedGameList.get(gameList.getSelectedIndex());
                        System.out.println(finChoice);
                        gameName.setText("You Have Selected: " + finChoice);
+
                    }
                });
 
+               ArrayList<String> deletedList = new ArrayList<>();
+               deleteButton.addActionListener(new ActionListener() {
+                   @Override
+                   public void actionPerformed(ActionEvent e) {
+                       FileInputStream FIS = null;
+                       try {
+                           FIS = new FileInputStream("StatisticsOfPiratedGameTime\\_playedGameList_.txt");
+                       } catch (FileNotFoundException ex) {
+                           throw new RuntimeException(ex);
+                       }
+                       InputStreamReader ISR = new InputStreamReader(FIS);
+                       BufferedReader BR = new BufferedReader(ISR);
+                       String readGameListLine;
+                       deletedList.clear();
+                       while (true) {
+                           try {
+                               if ((readGameListLine = BR.readLine()) != null) {
+                                   deletedList.add(readGameListLine);
+                               } else {
+                                   break;
+                               }
+                           } catch (IOException ex) {
+                               throw new RuntimeException(ex);
+                           }
+                       }
+                       deletedList.remove(gameList.getSelectedIndex());
+                       gameList.removeItem(gameList.getSelectedIndex());
+                       gameList.removeItemAt(gameList.getSelectedIndex());
+                       String fileName = "StatisticsOfPiratedGameTime\\_playedGameList_.txt";
+                       Path path = Paths.get(fileName);
+                       try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path)) {
+                           bufferedWriter.write("");
+                       } catch (IOException ex) {
+                           throw new RuntimeException(ex);
+                       }
+                       System.out.println(deletedList.size());
+                       for (int i = 0; i < deletedList.size(); i++) {
+                            try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path,StandardOpenOption.APPEND)) {
+                                bufferedWriter.write(deletedList.get(i) + "\n");
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                       }
+                       System.out.println(deletedList.size());
+                   }
+               });
         }
     });
 
