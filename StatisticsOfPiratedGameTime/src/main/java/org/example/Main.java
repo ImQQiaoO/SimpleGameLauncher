@@ -80,8 +80,12 @@ public class Main {
                 jFrameSelecting.add(deleteButton);
                 jFrameSelecting.add(gameList);
                 /*TODO: Add Here! */
-                String basePath = "StatisticsOfPiratedGameTime";
+
+                String basePath = "..\\StatisticsOfPiratedGameTime";
                 String[] list = new File(basePath).list();
+                for (int i = 0; i < list.length; i++) {
+                    System.out.println(list[i]);
+                }
                 int cnt = 0;
                 int cntListFinder = 0;
                 for (int i = 0; i < Objects.requireNonNull(list).length; i++) {
@@ -91,7 +95,7 @@ public class Main {
                     }
                 }
                 if (cntListFinder == 0) {
-                    String fileName = "StatisticsOfPiratedGameTime\\_playedGameList_.txt";
+                    String fileName = "..\\StatisticsOfPiratedGameTime\\_playedGameList_.txt";
                     Path path = Paths.get(fileName);
                     try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path)) {
                         bufferedWriter.write("");
@@ -102,7 +106,7 @@ public class Main {
                 ArrayList<String> playedGameList0 = new ArrayList<>();
                 FileInputStream FIS = null;
                 try {
-                    FIS = new FileInputStream("StatisticsOfPiratedGameTime\\_playedGameList_.txt");
+                    FIS = new FileInputStream("..\\StatisticsOfPiratedGameTime\\_playedGameList_.txt");
                 } catch (FileNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -139,7 +143,7 @@ public class Main {
                             System.out.println(selectedGame);
                             //列出当前项目文件夹中的所有文件，与读取到的游戏名进行对比，如果发现项目文件夹不存在以此游戏命名的txt文件，
                             //则创建此游戏的文件夹，并将游戏时长置为0
-                            String basePath = "StatisticsOfPiratedGameTime";
+                            String basePath = "..\\StatisticsOfPiratedGameTime";
                             String[] list = new File(basePath).list();
                             int cnt = 0;
                             int cntListFinder = 0;
@@ -150,7 +154,7 @@ public class Main {
 
                             }
                             if (cnt == 0) {
-                                String fileName = "StatisticsOfPiratedGameTime\\" + selectedGame + ".txt";
+                                String fileName = "..\\StatisticsOfPiratedGameTime\\" + selectedGame + ".txt";
                                 Path path = Paths.get(fileName);
                                 try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path)) {
                                     bufferedWriter.write("0");
@@ -161,7 +165,7 @@ public class Main {
 //TODO:写好列表文件！
                             FileInputStream fileInputStream = null;
                             try {
-                                fileInputStream = new FileInputStream("StatisticsOfPiratedGameTime\\_playedGameList_.txt");
+                                fileInputStream = new FileInputStream("..\\StatisticsOfPiratedGameTime\\_playedGameList_.txt");
                             } catch (FileNotFoundException ex) {
                                 throw new RuntimeException(ex);
                             }
@@ -180,7 +184,7 @@ public class Main {
                                 }
                                 if ((strLine) == null) {
                                     System.out.println("列表内容为空");
-                                    String fileName = "StatisticsOfPiratedGameTime\\_playedGameList_.txt";
+                                    String fileName = "..\\StatisticsOfPiratedGameTime\\_playedGameList_.txt";
                                     Path path = Paths.get(fileName);
                                     try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
                                         bufferedWriter.write(fileChooser.getSelectedFile().getAbsolutePath() + "\n");
@@ -198,7 +202,7 @@ public class Main {
                             }
                             FileInputStream FIS = null;
                             try {
-                                FIS = new FileInputStream("StatisticsOfPiratedGameTime\\_playedGameList_.txt");
+                                FIS = new FileInputStream("..\\StatisticsOfPiratedGameTime\\_playedGameList_.txt");
                             } catch (FileNotFoundException ex) {
                                 throw new RuntimeException(ex);
                             }
@@ -236,7 +240,7 @@ public class Main {
                        System.out.println(gameList.getSelectedIndex());
                        FileInputStream FIS = null;
                        try {
-                           FIS = new FileInputStream("StatisticsOfPiratedGameTime\\_playedGameList_.txt");
+                           FIS = new FileInputStream("..\\StatisticsOfPiratedGameTime\\_playedGameList_.txt");
                        } catch (FileNotFoundException ex) {
                            throw new RuntimeException(ex);
                        }
@@ -267,7 +271,7 @@ public class Main {
                    public void actionPerformed(ActionEvent e) {
                        FileInputStream FIS = null;
                        try {
-                           FIS = new FileInputStream("StatisticsOfPiratedGameTime\\_playedGameList_.txt");
+                           FIS = new FileInputStream("..\\StatisticsOfPiratedGameTime\\_playedGameList_.txt");
                        } catch (FileNotFoundException ex) {
                            throw new RuntimeException(ex);
                        }
@@ -289,7 +293,7 @@ public class Main {
                        deletedList.remove(gameList.getSelectedIndex());
                        gameList.removeItem(gameList.getSelectedIndex());
                        gameList.removeItemAt(gameList.getSelectedIndex());
-                       String fileName = "StatisticsOfPiratedGameTime\\_playedGameList_.txt";
+                       String fileName = "..\\StatisticsOfPiratedGameTime\\_playedGameList_.txt";
                        Path path = Paths.get(fileName);
                        try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path)) {
                            bufferedWriter.write("");
@@ -339,7 +343,7 @@ public class Main {
 
                         int m = finChoice.lastIndexOf("\\");
                         String nameOfGame = finChoice.substring(m + 1);
-                        FileInputStream fileInputStream = new FileInputStream("StatisticsOfPiratedGameTime\\" + nameOfGame + ".txt");
+                        FileInputStream fileInputStream = new FileInputStream("..\\StatisticsOfPiratedGameTime\\" + nameOfGame + ".txt");
                         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
                         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                         String strLine;
@@ -348,7 +352,7 @@ public class Main {
                             lastTime = Long.parseLong(strLine);
                         }
 
-                        String fileName = "StatisticsOfPiratedGameTime\\" + nameOfGame + ".txt";
+                        String fileName = "..\\StatisticsOfPiratedGameTime\\" + nameOfGame + ".txt";
                         Path path = Paths.get(fileName);
 
                         totalPlayTime = lastTime + playTimeMs;
