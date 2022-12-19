@@ -1,5 +1,3 @@
-package org.example;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,13 +15,13 @@ public class Main {
     static Process process;
     static long totalPlayTime = 0;
     static ArrayList<String> playedGameList = new ArrayList<>();
-    //    static int chooseCounter = 0; //第二个页面choose按键（调用文件选择器）的计数器
     static String finChoice = "";
 
     public static void main(String[] args) throws InterruptedException {
 
         final String[] path = {""};
         JFrame jFrame = new JFrame("VillvCotton's Pirate Games Launcher");
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setLocationRelativeTo(null);
         jFrame.setLayout(null);
         jFrame.setSize(508, 252);
@@ -82,14 +80,14 @@ public class Main {
 
                 int folderFinder = 0;
                 String basePath = "..\\StatisticsOfPiratedGameTime";
-                String[] list = new File(basePath).list();
-                for (int i = 0; i < list.length; i++) {
-                    if (list[i].equals("Games")){
+                String[] list = new String[]{};
+                list = new File(basePath).list();
+                for (int i = 0; i < Objects.requireNonNull(list).length; i++) {
+                    if (list[i].equals("GameInfo")){
                         folderFinder ++;
                     }
                 }
 
-                //创建文件夹存储各个游戏时长文件
                 if (folderFinder == 0){
                     File dir = new File("..\\StatisticsOfPiratedGameTime\\GameInfo\\");
                     dir.mkdir();
@@ -98,7 +96,6 @@ public class Main {
                 int cnt = 0;
                 int cntListFinder = 0;
                 for (int i = 0; i < Objects.requireNonNull(list).length; i++) {
-                    //创建_playedGameList_.txt文件存储已经玩过的游戏列表
                     if (list[i].equals("_playedGameList_.txt")) {
                         cntListFinder++;
                     }
@@ -150,8 +147,6 @@ public class Main {
                             System.out.println(path[0]);
                             String selectedGame = path[0].substring(path[0].lastIndexOf("\\") + 1);
                             System.out.println(selectedGame);
-                            //列出当前项目文件夹中的所有文件，与读取到的游戏名进行对比，如果发现项目文件夹不存在以此游戏命名的txt文件，
-                            //则创建此游戏的文件夹，并将游戏时长置为0
                             String basePath = "..\\StatisticsOfPiratedGameTime\\GameInfo";
                             String[] list = new File(basePath).list();
                             int cnt = 0;
@@ -171,7 +166,6 @@ public class Main {
                                     throw new RuntimeException(ex);
                                 }
                             }
-//TODO:写好列表文件！
                             FileInputStream fileInputStream = null;
                             try {
                                 fileInputStream = new FileInputStream("..\\StatisticsOfPiratedGameTime\\_playedGameList_.txt");
@@ -180,7 +174,7 @@ public class Main {
                             }
                             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
                             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                            String strLine = "";//应为文件读取的每一行的内容
+                            String strLine = "";
                             int lineCnt = 0;
                             int cntNotSame = 0;
                             while (true) {
