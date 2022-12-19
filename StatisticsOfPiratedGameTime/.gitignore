@@ -3,6 +3,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 GameInfo/
+_playedGameList_.txt
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
