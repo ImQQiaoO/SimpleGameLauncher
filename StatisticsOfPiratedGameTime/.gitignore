@@ -3,7 +3,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 GameInfo/
-_playedGameList_.txt
+/_playedGameList_.txt
+classes/
+*.txt
+*.jar
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

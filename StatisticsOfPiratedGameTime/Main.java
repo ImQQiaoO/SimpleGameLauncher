@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -7,8 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
+import java.util.List;
 
 public class Main {
 
@@ -24,23 +25,27 @@ public class Main {
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setLocationRelativeTo(null);
         jFrame.setLayout(null);
-        jFrame.setSize(508, 252);
+        jFrame.setSize(508, 300);
         jFrame.setVisible(true);
         jFrame.setResizable(false);
         JLabel textLabel = new JLabel("Please Select Your Game:");
         textLabel.setBounds(175, 50, 150, 50);
         JButton jButton = new JButton("Select");
         JButton jButtonGame = new JButton("Start");
+        JButton jShowList = new JButton("Show My Game Time List");
         jButton.setBounds(94, 125, 100, 50);
         jButtonGame.setBounds(300, 125, 100, 50);
+        jShowList.setBounds(94,185, 306,50);
         JPanel textPanel = new JPanel();
         JPanel buttonPanel = new JPanel();
         textPanel.add(textLabel);
         buttonPanel.add(jButton);
         buttonPanel.add(jButtonGame);
+        buttonPanel.add(jShowList);
         jFrame.add(textLabel);
         jFrame.add(jButton);
         jFrame.add(jButtonGame);
+        jFrame.add(jShowList);
         JLabel gameName = new JLabel("You Have Selected: ...");
         gameName.setBounds(175, 70, 300, 50);
         textPanel.add(gameName);
@@ -366,7 +371,9 @@ public class Main {
                             }
 
                             JOptionPane.showMessageDialog(null,
-                                    "You played for " + playTimeMin + " Minutes This Time.\n" + "You played for " + totalPlayTimeMin +
+                                    "You played for " + new Formatter().format("%.1f", Float.parseFloat(String.valueOf(playTimeMin))/60000) +
+                                            " Minutes This Time.\n" + "You played for " +
+                                            new Formatter().format("%.1f", Float.parseFloat(String.valueOf(totalPlayTimeMin))/60000) +
                                             " Minutes In Total.\n",
                                     "Play Happily!", JOptionPane.INFORMATION_MESSAGE);
                         }
@@ -377,6 +384,56 @@ public class Main {
                     throw new RuntimeException(ex);
                 }
 
+            }
+        });
+
+        jShowList.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("GameTime List");
+//                frame.setResizable(false);
+                frame.setLocationRelativeTo(null);
+                JPanel panel = new JPanel();
+//        JTextArea textArea = new JTextArea();
+                Vector<Object> contents = new Vector<>();
+                JList<Object> listGame = new JList<>(contents);
+                String basePath = "..\\StatisticsOfPiratedGameTime\\GameInfo";
+                String[] list = new String[]{};
+                list = new File(basePath).list();
+                String contentName;
+                String contentTime;
+                HashMap<String, Double> playTimeMap = new HashMap<String, Double>();
+
+                for (int i = 0; i < Objects.requireNonNull(list).length; i++) {
+
+                    contentName = list[i].substring(0,list[i].lastIndexOf("."));
+                    System.out.println(list[i]);
+                    //Read the number in every txt file and calculate the number, save the result as hours
+                    try {
+                        contentTime = new String(Files.readAllBytes(Paths.get("..\\StatisticsOfPiratedGameTime\\GameInfo\\" + list[i])));
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    System.out.println(contentTime);
+                    playTimeMap.put(contentName, Double.parseDouble(contentTime));
+//                    contents.add(contentName + "      "  + new Formatter().format("%.2f", Double.parseDouble(contentTime)/60000/60) + " hours");
+                }
+                System.out.println("排序前:" + playTimeMap);
+                List<Map.Entry<String, Double>> newTimeMapList = new ArrayList<Map.Entry<String, Double>>(playTimeMap.entrySet());
+                Collections.sort(newTimeMapList, (o1, o2) -> (o2.getValue().compareTo(o1.getValue())));
+                System.out.println("排序后:" + newTimeMapList);
+                for (int i = 0; i < Objects.requireNonNull(list).length; i++) {
+                    contents.add(newTimeMapList.get(i).getKey() + "    -    " + new Formatter().format("%.2f", Double.parseDouble(String.valueOf(newTimeMapList.get(i).getValue()))/60000/60) + " hours");
+                }
+
+
+                panel.setLayout(new GridLayout());
+                panel.add(new JScrollPane(listGame));
+                frame.add(panel);
+
+                frame.setSize(400, 500);
+                frame.setVisible(true);
             }
         });
     }
