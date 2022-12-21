@@ -371,9 +371,9 @@ public class Main {
                             }
 
                             JOptionPane.showMessageDialog(null,
-                                    "You played for " + new Formatter().format("%.1f", Float.parseFloat(String.valueOf(playTimeMin))/60000) +
+                                    "You played for " + new Formatter().format("%.1f", Float.parseFloat(String.valueOf(playTimeMin))) +
                                             " Minutes This Time.\n" + "You played for " +
-                                            new Formatter().format("%.1f", Float.parseFloat(String.valueOf(totalPlayTimeMin))/60000) +
+                                            new Formatter().format("%.1f", Float.parseFloat(String.valueOf(totalPlayTimeMin))) +
                                             " Minutes In Total.\n",
                                     "Play Happily!", JOptionPane.INFORMATION_MESSAGE);
                         }
