@@ -325,6 +325,9 @@ public class Main {
         jButtonGame.addActionListener(new ActionListener() {//start button
             @Override
             public void actionPerformed (ActionEvent e){
+                if (finChoice.equals("")){
+                    JOptionPane.showMessageDialog(null, "You Didn't select anything");
+                }else{
                 jFrame.dispose();
                 try {
 
@@ -384,6 +387,7 @@ public class Main {
                     throw new RuntimeException(ex);
                 }
 
+            }
             }
         });
 
